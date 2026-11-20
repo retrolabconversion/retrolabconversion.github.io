@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.github.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111d1b">
+  <meta name="description" content="What if it got ported? Explore Retro Lab Conversion's homebrew experiments for Mega Drive and Super Nintendo.">
+  <meta property="og:title" content="Retro Lab Conversion — What if it got ported?">
+  <meta property="og:description" content="Six retro experiments. Two legendary consoles. Discover the projects and their downloadable builds.">
+  <meta property="og:image" content="https://retrolabconversion.github.io/assets/banner.png">
+  <meta property="og:type" content="website">
+  <title>Retro Lab Conversion — What if it got ported?</title>
+  <link rel="icon" href="assets/logo.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#projects">Skip to projects</a>
+  <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 11 7-11 7z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 15v5h16v-5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M9 2v4m6-4v4M9 18v4m6-4v4M2 9h4m-4 6h4m12-6h4m-4 6h4M10 10h4v4h-4z"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  </defs></svg>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./" aria-label="Retro Lab Conversion home"><img src="assets/logo.png" alt="" width="54" height="54"><span>RETRO LAB<span class="brand-second">CONVERSION<span class="brand-square"></span></span></span></a>
+      <button class="icon-button menu-toggle" id="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="navigation"><svg><use href="#i-menu"/></svg></button>
+      <nav id="navigation" aria-label="Main navigation">
+        <a class="nav-active" href="#projects">The projects</a><a href="#about">Inside the lab</a>
+        <a class="button button-small button-youtube" href="https://www.youtube.com/@RetroLabConversion" target="_blank" rel="noopener noreferrer"><svg><use href="#i-play"/></svg> Watch on YouTube</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container" aria-labelledby="hero-title">
+      <div class="hero-topline"><span class="eyebrow">ARCADE ROOTS. NEW POSSIBILITIES.</span><span class="mono hero-console">MEGA DRIVE / SUPER NINTENDO</span></div>
+      <div class="hero-banner" role="img" aria-label="Retro Lab Conversion: what if it got ported? Arcade machines, circuit boards and retro consoles in phosphor green."></div>
+      <div class="hero-copy">
+        <div><p class="eyebrow section-kicker">WELCOME TO THE LAB</p><h1 id="hero-title">Old hardware.<br><span>New possibilities.</span></h1></div>
+        <div class="hero-intro"><p>What if your favourite arcade games found a new home? Explore homebrew conversions, technical experiments and a different side of the 16-bit era.</p><a class="button button-primary" href="#projects"><svg><use href="#i-chip"/></svg> Explore the projects</a></div>
+      </div>
+      <div class="lab-strip"><span><strong>06</strong> PROJECTS IN THE LAB</span><span><strong>02</strong> ICONIC CONSOLES</span><span class="strip-quote">“what if it got ported?”</span></div>
+    </section>
+
+    <section class="projects-section container" id="projects" aria-labelledby="projects-title">
+      <div class="section-heading"><div><p class="eyebrow section-kicker">THE EXPERIMENTS</p><h2 id="projects-title">From the workbench.</h2></div><p class="section-note">Familiar games. Unexpected hardware.</p></div>
+      <div class="catalog-toolbar">
+        <div class="filter-tabs" role="group" aria-label="Filter by console"><button class="filter active" data-platform="all" aria-pressed="true">All projects <span>6</span></button><button class="filter" data-platform="Mega Drive" aria-pressed="false">Mega Drive <span>4</span></button><button class="filter" data-platform="Super Nintendo" aria-pressed="false">Super Nintendo <span>2</span></button></div>
+        <label class="search-field"><svg aria-hidden="true"><use href="#i-search"/></svg><span class="sr-only">Search projects</span><input id="search" type="search" placeholder="Find a project…" autocomplete="off"></label>
+      </div>
+      <div class="catalog-subline"><p id="results-count" aria-live="polite">6 projects</p><label class="sort-label">Sort by <select id="sort"><option value="featured">Featured</option><option value="name">Name: A–Z</option><option value="downloads">Downloads</option></select></label></div>
+      <p class="catalog-notice" id="catalog-notice" role="status" hidden></p>
+      <div class="project-grid" id="project-grid" aria-label="Project catalogue"></div>
+      <div class="empty-state" id="empty-state" hidden><svg aria-hidden="true"><use href="#i-search"/></svg><h3>No projects found.</h3><p>Try another title or console.</p><button class="button button-secondary" id="reset-filters">Reset filters</button></div>
+      <noscript><p class="catalog-notice">Enable JavaScript to browse the six projects and their download counts. You can still <a href="https://www.youtube.com/@RetroLabConversion">visit the YouTube channel</a>.</p></noscript>
+      <p class="download-note"><svg aria-hidden="true"><use href="#i-download"/></svg> Builds appear here when they are published. Download counts are shown beneath each available ROM.</p>
+    </section>
+
+    <section class="about-section container" id="about" aria-labelledby="about-title">
+      <div class="about-visual"><img src="assets/logo.png" width="800" height="800" alt="RLC pixel logo: an arcade cabinet becoming a console"><span class="mono">ARCADE DNA. CONSOLE SPIRIT.</span></div>
+      <div class="about-copy"><p class="eyebrow section-kicker">INSIDE THE LAB</p><h2 id="about-title">The question is always:<br><span>“What if?”</span></h2><p>An arcade favourite on a 16-bit console. A 3D experiment on unexpected hardware. Retro Lab Conversion explores the possibilities hidden inside classic machines.</p><p>Follow the projects on YouTube, see the experiments in motion, and find published builds right here.</p><a class="button button-secondary" href="https://www.youtube.com/@RetroLabConversion" target="_blank" rel="noopener noreferrer"><svg><use href="#i-play"/></svg> Step inside the lab</a></div>
+    </section>
+
+    <section class="channel-section container" aria-labelledby="channel-title"><div><p class="eyebrow">MORE FROM THE WORKBENCH</p><h2 id="channel-title">See the experiments in motion.</h2><p>Gameplay, conversions and the next “what if”. All on the channel.</p></div><a class="button button-primary" href="https://www.youtube.com/@RetroLabConversion/videos" target="_blank" rel="noopener noreferrer"><svg><use href="#i-play"/></svg> Visit the YouTube channel</a></section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><div class="footer-brand"><img src="assets/logo.png" alt="" width="38" height="38"><span>Retro Lab Conversion <span class="footer-tagline">What if it got ported?</span></span></div><div class="footer-links"><button class="text-button" id="privacy-button">Privacy & downloads</button><a href="creator.html">Creator workspace</a><span>© 2026 RLC</span></div></div><div class="container footer-note">Game names and trademarks belong to their respective owners.</div></footer>
+
+  <dialog id="project-dialog" class="project-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div><button class="icon-button dialog-close" id="dialog-close" aria-label="Close project details"><svg><use href="#i-close"/></svg></button></dialog>
+  <dialog id="privacy-dialog" class="info-dialog" aria-labelledby="privacy-title"><button class="icon-button dialog-close" id="privacy-close" aria-label="Close privacy information"><svg><use href="#i-close"/></svg></button><p class="eyebrow">GOOD TO KNOW</p><h2 id="privacy-title">Privacy & downloads</h2><p>This site adds no advertising trackers, analytics or embedded video players. YouTube links open the channel only when you choose to visit.</p><p>Once connected, the catalogue reads public release information from GitHub. Your browser then contacts GitHub, which receives normal connection information such as your IP address. Release information may be cached in this browser tab for five minutes.</p><p>Download counts come from GitHub for each published file. They are not counts of unique people and do not guarantee completed transfers. If a file is replaced, its counter may restart.</p><p>The creator workspace can save an optional local draft in your browser. It never uploads files or stores account credentials.</p><a class="button button-secondary" href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub privacy policy</a></dialog>
+</body>
+</html>
