@@ -5,7 +5,7 @@ const number=n=>new Intl.NumberFormat('en').format(n);
 function el(tag,className,text){const e=document.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;}
 function icon(name){const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('aria-hidden','true');const use=document.createElementNS(svg.namespaceURI,'use');use.setAttribute('href',`#i-${name}`);svg.append(use);return svg;}
 function external(a,url){a.href=url;a.target='_blank';a.rel='noopener noreferrer';return a;}
-function cover(p){const frame=el('div',`project-cover crop-${p.crop}`);const img=el('img');img.src='assets/projects-source.png';img.alt=`${p.name} on ${p.platform} — channel thumbnail`;img.loading='lazy';img.width=1305;img.height=639;frame.append(img,el('span','cover-shade'));return frame;}
+function cover(p){const frame=el('div',p.image?'project-cover standalone-cover':`project-cover crop-${p.crop}`);const img=el('img');img.src=p.image||'assets/projects-source.png';img.alt=`${p.name} on ${p.platform} — ${p.image?'game screenshot':'channel thumbnail'}`;img.loading='lazy';if(!p.image){img.width=1305;img.height=639;}frame.append(img,el('span','cover-shade'));return frame;}
 function badge(p){return el('span',`platform-badge${p.platform==='Super Nintendo'?' snes':''}`,p.platform.toUpperCase());}
 function openDialog(d){d.showModal();document.body.classList.add('dialog-open');}
 function details(p){
@@ -29,7 +29,7 @@ async function getReleases(config){
   try{const releases=[];for(let page=1;page<=5;page++){const response=await fetch(`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repository)}/releases?per_page=100&page=${page}`,{headers:{Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(12000),credentials:'omit',referrerPolicy:'no-referrer'});if(!response.ok)throw new Error(String(response.status));const batch=await response.json();if(!Array.isArray(batch))throw new Error('Invalid releases');releases.push(...batch);if(batch.length<100)break;}try{sessionStorage.setItem(key,JSON.stringify({time:Date.now(),releases}));}catch{}return releases;}catch(error){if(Array.isArray(cache?.releases)){notice('Showing previously loaded builds. Download counts may be out of date.');return cache.releases;}throw error;}
 }
 async function start(){
-  try{const response=await fetch('catalogue.json');if(!response.ok)throw new Error();const projects=await response.json();state.projects=mergeReleases(projects,[],{});render();
+  try{const response=await fetch('catalogue.json',{cache:'no-cache'});if(!response.ok)throw new Error();const projects=await response.json();state.projects=mergeReleases(projects,[],{});render();
     try{const cfg=await fetch('config.json');if(!cfg.ok)throw new Error();const config=await cfg.json();if(validRepository(config)){const releases=await getReleases(config);state.projects=mergeReleases(projects,releases,config);render();}}catch{notice('Live downloads are temporarily unavailable. Project details and channel links are still available.');}
   }catch{notice('The project catalogue could not be loaded. Please refresh the page, or visit the YouTube channel.');$('#results-count').textContent='Catalogue unavailable';}
 }
