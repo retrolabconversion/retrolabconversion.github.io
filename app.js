@@ -1,4 +1,4 @@
-import {validRepository,mergeReleases,filterProjects,formatSize} from './catalogue-core.mjs?v=20261122-availability2';
+import {validRepository,mergeReleases,filterProjects,formatSize} from './catalogue-core.mjs?v=20261122-counts3';
 const $=s=>document.querySelector(s);
 const state={projects:[],platform:'all',query:'',sort:'featured'};
 const number=n=>new Intl.NumberFormat('en').format(n);
@@ -14,6 +14,7 @@ function details(p){
   const inner=el('div','dialog-content-inner');inner.append(badge(p));const title=el('h2','',p.name);title.id='dialog-title';inner.append(title,el('p','dialog-description',p.description),videoLink(p));
   const dl=el('dl','detail-grid');for(const [label,value] of [['ORIGIN',p.origin],['TARGET',p.platform],['BUILD',p.release?.tag||'Not published yet']]){const part=el('div');part.append(el('dt','',label),el('dd','',value));dl.append(part);}inner.append(dl);
   if(p.assets.length){const list=el('div','asset-list');for(const a of p.assets){const row=el('div','asset-row');const link=external(el('a','button button-primary'),a.url);link.append(icon('download'),document.createTextNode(`Download ${a.name}`));row.append(link,el('p','asset-meta',`${formatSize(a.size)} · ${number(a.downloads)} downloads · ${p.release.tag}`));list.append(row);}inner.append(list);}else{const status=el('div','dialog-status');status.append(el('strong','','Coming soon'),el('p','','This project is part of the lab. Its download will appear here when the build is made available.'));inner.append(status);}
+  if(p.assets.length&&p.countDownloadHistory)inner.append(el('p','asset-meta',`${number(p.downloads)} total downloads. Counts include previous builds.`));
   wrap.append(art,inner);openDialog($('#project-dialog'));
 }
 function card(p){

@@ -1,6 +1,7 @@
 [
   {
     "id": "super-virtua-racing",
+    "countDownloadHistory": true,
     "name": "Super Virtua Racing",
     "subtitle": "Virtua Racing on Super Nintendo",
     "platform": "Super Nintendo",

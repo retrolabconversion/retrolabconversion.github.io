@@ -14,14 +14,25 @@ export function releaseProjectId(release, projects) {
 export function mergeReleases(projects, releases, config) {
   if (!validRepository(config)) return projects.map(p=>({...p,release:null,assets:[],downloads:0}));
   const {owner,repository}=config.github;
-  const found=new Map();
+  const found=new Map(),history=new Map();
   for(const release of [...releases].filter(r=>!r.draft && !r.prerelease && r.published_at).sort((a,b)=>Date.parse(b.published_at)-Date.parse(a.published_at))) {
     const id=releaseProjectId(release,projects);
-    if(!id || found.has(id)) continue;
+    if(!id) continue;
     const assets=(release.assets||[]).filter(a=>a.state==='uploaded' && ROM_EXTENSION.test(a.name||'') && safeDownloadUrl(a.browser_download_url,owner,repository)).map(a=>({name:a.name,url:a.browser_download_url,size:Math.max(0,Number(a.size)||0),downloads:Number.isSafeInteger(a.download_count)&&a.download_count>=0?a.download_count:0}));
-    if(assets.length) found.set(id,{release:{tag:release.tag_name,date:release.published_at},assets,downloads:assets.reduce((n,a)=>n+a.downloads,0)});
+    if(assets.length){
+      const totals=history.get(id)||{downloads:0,files:new Map()};
+      for(const asset of assets){totals.downloads+=asset.downloads;totals.files.set(asset.name,(totals.files.get(asset.name)||0)+asset.downloads);}
+      history.set(id,totals);
+      if(!found.has(id))found.set(id,{release:{tag:release.tag_name,date:release.published_at},assets,downloads:assets.reduce((n,a)=>n+a.downloads,0)});
+    }
   }
-  return projects.map(p=>({...p,...((p.downloadsEnabled!==false&&found.get(p.id))||{release:null,assets:[],downloads:0})}));
+  return projects.map(p=>{
+    const current=p.downloadsEnabled!==false&&found.get(p.id);
+    if(!current)return {...p,release:null,assets:[],downloads:0};
+    if(!p.countDownloadHistory)return {...p,...current};
+    const totals=history.get(p.id);
+    return {...p,...current,downloads:totals.downloads,assets:current.assets.map(a=>({...a,downloads:totals.files.get(a.name)||0}))};
+  });
 }
 export function filterProjects(projects,{platform='all',query='',sort='featured'}={}) {
   const normalize=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
