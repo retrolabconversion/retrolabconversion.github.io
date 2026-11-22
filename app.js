@@ -5,7 +5,7 @@ const number=n=>new Intl.NumberFormat('en').format(n);
 function el(tag,className,text){const e=document.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;}
 function icon(name){const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('aria-hidden','true');const use=document.createElementNS(svg.namespaceURI,'use');use.setAttribute('href',`#i-${name}`);svg.append(use);return svg;}
 function external(a,url){a.href=url;a.target='_blank';a.rel='noopener noreferrer';return a;}
-function videoLink(p){const link=external(el('a','project-video'),p.video);link.setAttribute('aria-label',`Watch ${p.name} on YouTube`);link.append(icon('play'),document.createTextNode('Watch on YouTube'));return link;}
+function videoLink(p){const hasVideo=Boolean(p.video);const link=external(el('a','project-video'),p.video||'https://www.youtube.com/@RetroLabConversion');link.setAttribute('aria-label',hasVideo?`Watch ${p.name} on YouTube`:'Visit Retro Lab Conversion on YouTube');link.append(icon('play'),document.createTextNode(hasVideo?'Watch on YouTube':'Visit YouTube channel'));return link;}
 function cover(p){const frame=el('div',p.image?'project-cover standalone-cover':`project-cover crop-${p.crop}`);const img=el('img');img.src=p.image||'assets/projects-source.png';img.alt=`${p.name} on ${p.platform} — ${p.image?'game screenshot':'channel thumbnail'}`;img.loading='lazy';if(!p.image){img.width=1305;img.height=639;}frame.append(img,el('span','cover-shade'));return frame;}
 function badge(p){return el('span',`platform-badge${p.platform==='Super Nintendo'?' snes':''}`,p.platform.toUpperCase());}
 function openDialog(d){d.showModal();document.body.classList.add('dialog-open');}

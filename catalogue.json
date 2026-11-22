@@ -1,5 +1,17 @@
 [
   {
+    "id": "super-virtua-racing",
+    "name": "Super Virtua Racing",
+    "subtitle": "Virtua Racing on Super Nintendo",
+    "platform": "Super Nintendo",
+    "kind": "RACING",
+    "origin": "Arcade",
+    "description": "PAL and NTSC homebrew builds for Super Nintendo, tested on emulator and FXPAK.",
+    "image": "assets/super-virtua-racing.png",
+    "search": "Super Virtua Racing",
+    "video": null
+  },
+  {
     "id": "f-zero",
     "name": "NeonCircuit",
     "subtitle": "Futuristic racing on Mega Drive",
