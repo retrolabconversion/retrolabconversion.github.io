@@ -27,8 +27,8 @@ function render(){const projects=filterProjects(state.projects,state);$('#projec
 function notice(message){$('#catalog-notice').textContent=message;$('#catalog-notice').hidden=false;}
 async function getReleases(config){
   const {owner,repository}=config.github;const key=`rlc-releases:${owner}/${repository}`;let cache=null;try{cache=JSON.parse(sessionStorage.getItem(key));}catch{}
-  if(cache?.time>Date.now()-300000 && Array.isArray(cache.releases))return cache.releases;
-  try{const releases=[];for(let page=1;page<=5;page++){const response=await fetch(`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repository)}/releases?per_page=100&page=${page}`,{headers:{Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(12000),credentials:'omit',referrerPolicy:'no-referrer'});if(!response.ok)throw new Error(String(response.status));const batch=await response.json();if(!Array.isArray(batch))throw new Error('Invalid releases');releases.push(...batch);if(batch.length<100)break;}try{sessionStorage.setItem(key,JSON.stringify({time:Date.now(),releases}));}catch{}return releases;}catch(error){if(Array.isArray(cache?.releases)){notice('Showing previously loaded builds. Download counts may be out of date.');return cache.releases;}throw error;}
+
+  try{const releases=[];for(let page=1;page<=5;page++){const response=await fetch(`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repository)}/releases?per_page=100&page=${page}`,{cache:'no-cache',headers:{Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(12000),credentials:'omit',referrerPolicy:'no-referrer'});if(!response.ok)throw new Error(String(response.status));const batch=await response.json();if(!Array.isArray(batch))throw new Error('Invalid releases');releases.push(...batch);if(batch.length<100)break;}try{sessionStorage.setItem(key,JSON.stringify({time:Date.now(),releases}));}catch{}return releases;}catch(error){if(Array.isArray(cache?.releases)){notice('Showing previously loaded builds. Download counts may be out of date.');return cache.releases;}throw error;}
 }
 async function start(){
   try{const response=await fetch('catalogue.json',{cache:'no-cache'});if(!response.ok)throw new Error();const projects=await response.json();state.projects=mergeReleases(projects,[],{});render();
@@ -42,3 +42,4 @@ $('#privacy-button').onclick=()=>openDialog($('#privacy-dialog'));
 $('#menu-toggle').onclick=()=>{const expanded=$('#menu-toggle').getAttribute('aria-expanded')==='true';$('#menu-toggle').setAttribute('aria-expanded',String(!expanded));$('#menu-toggle').setAttribute('aria-label',expanded?'Open navigation':'Close navigation');$('#navigation').classList.toggle('open',!expanded);};
 for(const a of document.querySelectorAll('nav a'))a.addEventListener('click',()=>{$('#navigation').classList.remove('open');$('#menu-toggle').setAttribute('aria-expanded','false');$('#menu-toggle').setAttribute('aria-label','Open navigation');});
 start();
+
