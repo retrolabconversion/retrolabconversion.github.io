@@ -15,6 +15,11 @@
   },
   {
     "id": "star-fox",
+    "countDownloadHistory": true,
+    "versions": [
+      {"label": "V2", "build": "0.49j", "date": "2026-11-25", "note": "Framerate optimization."},
+      {"label": "V1", "build": "0.49g", "date": "2026-11-22", "note": "First ROM release."}
+    ],
     "name": "AstraWing",
     "subtitle": "A new flight path for 3D",
     "platform": "Mega Drive",
